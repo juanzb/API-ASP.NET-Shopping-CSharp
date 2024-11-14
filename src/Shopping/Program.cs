@@ -10,7 +10,7 @@ namespace Shopping
         {
             var ServiceInvoice = new InvoicesServices();
             var se = new ClientsServices();
-            var p = new ProductsRepo();
+            var p = new ProductsRepository();
             //var ServiceInvoice = new InvoicesServices();
             //var all = ServiceInvoice.AllInvoicesService();
             //var invoice = ServiceInvoice.GetInvoiceService(5);

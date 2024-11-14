@@ -140,7 +140,7 @@ namespace Services
         private void SetClient(Invoices invoice)
         {
             try { 
-                Clients client = new ClientsRepo().GetClientRepo(invoice.ClientID);
+                Clients client = new ClientsRepository().GetClientRepo(invoice.ClientID);
 
                 invoice.ClientID = client.Id;
                 invoice.Client = new Clients
@@ -181,7 +181,7 @@ namespace Services
         {
             try
             {
-                Products productGet = new ProductsRepo().GetProductsRepo(detail.ProductID);
+                Products productGet = new ProductsRepository().GetProductsRepo(detail.ProductID);
 
                 detail.Product = new Products
                 {

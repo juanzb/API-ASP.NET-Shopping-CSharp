@@ -4,7 +4,7 @@ using Parameters;
 
 namespace Repositories
 {
-    public class InvoicesRepo
+    public class InvoicesRepository
     {
         public List<Invoices> AllInvoicesRepo()
         {
