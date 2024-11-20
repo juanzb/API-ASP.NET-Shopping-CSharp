@@ -2,7 +2,7 @@
 using MySql.Data.MySqlClient;
 using Parameters;
 
-namespace Repositories
+namespace Repository.MysqlServers
 {
     public class ProductsRepository
     {

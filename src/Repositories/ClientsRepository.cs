@@ -1,32 +1,34 @@
 ﻿using Models;
 using MySql.Data.MySqlClient;
 using Parameters;
+using Repository.Interfaces;
 
-namespace Repositories
+namespace Repository.MysqlServers
 {
-    public class ClientsRepository
+    public class ClientsRepository : Repository, IClientsRepository
     {
-        public List<Clients> AllClientsRepo()
+        public ClientsRepository(MySqlConnection connect, MySqlTransaction transaction) 
+        { 
+            this._connect = connect;
+            this._transaction = transaction;
+        }
+        public List<Clients> GetAll()
         {
             var result = new List<Clients>();
             try
             {
-                using (var connect = new MySqlConnection(ParametersDB.ShopDB))
+                const string queryDb = "SELECT * FROM clients";
+                using (var command = CreateMySqlCommand(queryDb))
                 {
-                    connect.Open();
-                    const string queryDb = "SELECT * FROM clients";
-                    using (var command = new MySqlCommand(queryDb, connect))
+                    using (var reader = command.ExecuteReader())
                     {
-                        using (var reader = command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            result.Add(new Clients
                             {
-                                result.Add(new Clients
-                                {
-                                    Id = reader.GetInt32("id"),
-                                    Name = reader.GetString("name")
-                                });
-                            }
+                                Id = reader.GetInt32("id"),
+                                Name = reader.GetString("name")
+                            });
                         }
                     }
                 }
@@ -44,32 +46,28 @@ namespace Repositories
             return result;
         }
 
-        public Clients GetClientRepo(int id)
+        public Clients GetById(int id)
         {
             var result = new Clients();
             try
             {
-                using (var connect = new MySqlConnection(ParametersDB.ShopDB))
-                {
-                    connect.Open();
-                    const string queryDB = "SELECT * FROM clients WHERE id = @id";
-                    var command = new MySqlCommand(queryDB, connect);
-                    command.Parameters.AddWithValue("id", id);
+                const string queryDB = "SELECT * FROM clients WHERE id = @id";
+                var command = CreateMySqlCommand(queryDB);
+                command.Parameters.AddWithValue("id", id);
 
-                    using (var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
                     {
-                        if (reader.Read())
+                        result = new Clients
                         {
-                            result = new Clients
-                            {
-                                Id = reader.GetInt32("id"),
-                                Name = reader.GetString("name")
-                            };
-                        }
-                        else
-                        {
-                            throw new ArgumentException("No se encuentras datos en la base de datos");
-                        }
+                            Id = reader.GetInt32("id"),
+                            Name = reader.GetString("name")
+                        };
+                    }
+                    else
+                    {
+                        throw new ArgumentException("No se encuentras datos en la base de datos");
                     }
                 }
             }
@@ -185,5 +183,6 @@ namespace Repositories
                 throw;
             }
         }
+
     }
 }

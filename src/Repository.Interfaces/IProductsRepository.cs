@@ -1,6 +1,6 @@
 ﻿namespace Repository.Interfaces
 {
-    internal interface ClientsInterface
+    internal interface IProductsRepository
     {
     }
 }

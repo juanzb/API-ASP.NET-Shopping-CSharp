@@ -1,12 +1,14 @@
 ﻿using Models;
 using MySql.Data.MySqlClient;
 using Parameters;
+using Repository.Interfaces;
 
-namespace Repositories
+namespace Repository.MysqlServers
 {
-    public class InvoicesDetailsRepository
+    public class InvoicesDetailsRepository : Repository, IInvoiceDetailsInterface
     {
-        public List<InvoicesDetails> AllInvoicesDetailsRepo()
+
+        public List<InvoicesDetails> GetAll()
         {
             var result = new List<InvoicesDetails>();
             try
@@ -50,7 +52,7 @@ namespace Repositories
             return result;
         }
 
-        public InvoicesDetails GetInvoicesDetailRepo(int id)
+        public InvoicesDetails GetAllByInvoiceId(int id)
         {
             var result = new InvoicesDetails();
             try
@@ -197,6 +199,16 @@ namespace Repositories
                 Console.WriteLine($"Error deleting invoice detail: {ex.Message}");
                 throw;
             }
+        }
+
+        public void Create(IEnumerable<InvoicesDetails> model, int invoiceId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void RemoveByInvoiceId(int invoiceId)
+        {
+            throw new NotImplementedException();
         }
     }
 }

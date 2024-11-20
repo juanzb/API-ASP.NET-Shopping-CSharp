@@ -21,8 +21,16 @@ namespace UnitOfWork.MysqlServer
         }
         public void Dispose()
         {
-            _connect.Close();
-            _connect.Dispose();
+            if (_transaction != null)
+            {
+                _transaction.Dispose();
+            }
+            else if (_connect != null) { 
+                _connect.Close();
+                _connect.Dispose();
+            }
+
+            Repositories = null;
         }
 
         public void SaveChanges()

@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Parameters\Parameters.csproj" />
+    <ProjectReference Include="..\Repository.Interfaces\Repository.Interfaces.csproj" />
   </ItemGroup>
 
 </Project>

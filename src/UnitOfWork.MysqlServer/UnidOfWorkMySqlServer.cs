@@ -8,6 +8,5 @@ namespace UnitOfWork.MysqlServer
         {
             return new UnidOfWorkMySqlServerAdapter();
         }
-        
     }
 }
