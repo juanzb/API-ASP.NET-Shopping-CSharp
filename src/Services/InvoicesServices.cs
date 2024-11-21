@@ -1,28 +1,43 @@
 ﻿using Models;
 using MySql.Data.MySqlClient;
+using Mysqlx.Session;
+using MySqlX.XDevAPI.Common;
 using Parameters;
-using Repositories;
+using System;
+using UnitOfWork.Interfaces;
 
 namespace Services
 {
     public class InvoicesServices
     {
+        private IUnitOfWork _unitOfWOrk;
+
+        public InvoicesServices(IUnitOfWork UnitOfWork)
+        {
+            this._unitOfWOrk = UnitOfWork;
+        }
+
         public List<Invoices> AllInvoicesService()
         {
             var result = new List<Invoices>();
             try
             {
-                List<Invoices> allInvoices = new InvoicesRepo().AllInvoicesRepo();
-                
-                foreach (var invoice in allInvoices)
+                using (var connect = _unitOfWOrk.Create())
                 {
-                    // Cliente
-                    SetClient(invoice);
+                    var allInvoices = connect.Repositories.InvoiceRepository.GetAll();
 
-                    // Details y Products
-                    SetDetails(invoice);   
+                    foreach (var invoice in allInvoices)
+                    {
+                        invoice.Client = connect.Repositories.ClientsRepository.GetById(invoice.ClientID);
+                        invoice.Detail = connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(invoice.Id);
 
-                    result.Add(invoice);
+                        foreach (var item in invoice.Detail)
+                        {
+                            item.Product = connect.Repositories.ProductsRepository.GetById(item.ProductID);
+                        }
+
+                        result.Add(invoice);
+                    }
                 }
             }
             catch (MySqlException ex)
@@ -43,13 +58,17 @@ namespace Services
             var result = new Invoices();
             try
             {
-                Invoices InvoiceGet = new InvoicesRepo().GetInvoiceRepo(id);
-                // Client
-                SetClient(InvoiceGet);
-                // Details and Products
-                SetDetails(InvoiceGet);
+                using (var connect = _unitOfWOrk.Create())
+                {
+                    result = connect.Repositories.InvoiceRepository.GetById(id);
+                    result.Client = connect.Repositories.ClientsRepository.GetById(result.ClientID);
+                    result.Detail = connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(result.Id);
 
-                result = InvoiceGet;
+                    foreach (var item in result.Detail)
+                    {
+                        item.Product = connect.Repositories.ProductsRepository.GetById(item.ProductID);
+                    }
+                }
             }
             catch (MySqlException ex)
             {
@@ -77,9 +96,10 @@ namespace Services
                 PepareModal(invoice);
 
                 // Se Agrega la data de la compra en la base de datos
-                new InvoicesRepo().CreateInvoiceRepo(invoice);
-
-
+                using (var connect = _unitOfWOrk.Create())
+                {
+                    connect.Repositories.InvoiceRepository.Create(invoice);
+                }
             }
             catch (Exception ex)
             {
@@ -88,7 +108,7 @@ namespace Services
             }
         }
 
-        public void UpdateInvoiceService(int invoiceID, Invoices invoice)
+        public void UpdateInvoiceService(Invoices invoice)
         {
             try
             {
@@ -96,7 +116,10 @@ namespace Services
                 PepareModal(invoice);
 
                 // Se Actualiza la data de la compra en la base de datos
-                new InvoicesRepo().UpdateInvoiceRepo(invoiceID ,invoice);
+                using (var connect = _unitOfWOrk.Create())
+                {
+                    connect.Repositories.InvoiceRepository.Update(invoice);
+                }
             }
             catch (Exception ex)
             {
@@ -109,8 +132,10 @@ namespace Services
         {
             try
             {
-                // Se Actualiza la data de la compra en la base de datos
-                new InvoicesRepo().DeleteInvoiceRepo(invoiceID);
+                using (var connect = _unitOfWOrk.Create())
+                {
+                    connect.Repositories.InvoiceRepository.Remove(invoiceID);
+                }
             }
             catch (ArgumentException ex)
             {
@@ -137,64 +162,66 @@ namespace Services
             model.SubTotal = model.Detail.Sum(x => x.SubTotal);
         }
 
-        private void SetClient(Invoices invoice)
-        {
-            try { 
-                Clients client = new ClientsRepository().GetClientRepo(invoice.ClientID);
+        //        private void SetClient(Invoices invoice)
+        //        {
+        //            try
+        //            {
+        //                Clients client = new ClientsRepository().GetClientRepo(invoice.ClientID);
 
-                invoice.ClientID = client.Id;
-                invoice.Client = new Clients
-                {
-                    Id = client.Id,
-                    Name = client.Name
-                };
-            }   
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error SetClient: {ex.Message}");
-                throw;
-            }
-        }
+        //                invoice.ClientID = client.Id;
+        //                invoice.Client = new Clients
+        //                {
+        //                    Id = client.Id,
+        //                    Name = client.Name
+        //                };
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"Error SetClient: {ex.Message}");
+        //                throw;
+        //            }
+        //        }
 
-        private void SetDetails(Invoices invoice)
-        {
-            try
-            {
-                List<InvoicesDetails> detailsGet = new InvoicesDetailsRepo().GetInvoicesDetailByInvoiceIDRepo(invoice.Id);
+        //        private void SetDetails(Invoices invoice)
+        //        {
+        //            try
+        //            {
+        //                List<InvoicesDetails> detailsGet = new InvoicesDetailsRepo().GetInvoicesDetailByInvoiceIDRepo(invoice.Id);
 
-                foreach (var detail in detailsGet)
-                {
-                    detail.Invoice = invoice;
+        //                foreach (var detail in detailsGet)
+        //                {
+        //                    detail.Invoice = invoice;
 
-                    // Products
-                    SetProduct(detail);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error SetDetail: {ex.Message}");
-                throw;
-            }
-        }
+        //                    // Products
+        //                    SetProduct(detail);
+        //                }
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"Error SetDetail: {ex.Message}");
+        //                throw;
+        //            }
+        //        }
 
-        private void SetProduct(InvoicesDetails detail)
-        {
-            try
-            {
-                Products productGet = new ProductsRepository().GetProductsRepo(detail.ProductID);
+        //        private void SetProduct(InvoicesDetails detail)
+        //        {
+        //            try
+        //            {
+        //                Products productGet = new ProductsRepository().GetProductsRepo(detail.ProductID);
 
-                detail.Product = new Products
-                {
-                    Id = productGet.Id,
-                    Name = productGet.Name,
-                    Price = productGet.Price
-                };
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error SetProduct: {ex.Message}");
-                throw;
-            }
-        }
+        //                detail.Product = new Products
+        //                {
+        //                    Id = productGet.Id,
+        //                    Name = productGet.Name,
+        //                    Price = productGet.Price
+        //                };
+        //            }
+        //            catch (Exception ex)
+        //            {
+        //                Console.WriteLine($"Error SetProduct: {ex.Message}");
+        //                throw;
+        //            }
+        //        }
+        //    }
     }
 }

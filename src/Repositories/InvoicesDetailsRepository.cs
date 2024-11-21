@@ -5,124 +5,27 @@ using Repository.Interfaces;
 
 namespace Repository.MysqlServers
 {
-    public class InvoicesDetailsRepository : Repository, IInvoiceDetailsInterface
+    public class InvoicesDetailsRepository : Repository, IInvoiceDetailsRespository
     {
-
+        public InvoicesDetailsRepository(MySqlConnection connect, MySqlTransaction transaction) 
+        { 
+            this._connect = connect;
+            this._transaction = transaction;
+        }
         public List<InvoicesDetails> GetAll()
         {
             var result = new List<InvoicesDetails>();
             try
             {
-                using (var connect = new MySqlConnection(ParametersDB.ShopDB))
+                const string queryDb = "SELECT * FROM invoicesDetails";
+                using (var command = CreateMySqlCommand(queryDb))
                 {
-                    connect.Open();
-                    const string queryDb = "SELECT * FROM invoicesDetails";
-                    using (var command = new MySqlCommand(queryDb, connect))
-                    {
-                        using (var reader = command.ExecuteReader())
-                        {
-                            while (reader.Read())
-                            {
-                                result.Add(new InvoicesDetails
-                                {
-                                    Id = reader.GetInt32("id"),
-                                    InvoiceID = reader.GetInt32("invoiceID"),
-                                    ProductID = reader.GetInt32("productID"),
-                                    Quantity = reader.GetInt32("quantity"),
-                                    Price = reader.GetDecimal("price"),
-                                    Iva = reader.GetDecimal("iva"),
-                                    SubTotal = reader.GetDecimal("Subtotal"),
-                                    Total = reader.GetDecimal("total"),
-                                });
-                            }
-                        }
-                    }
-                }
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error DB: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
-                throw;
-            }
-            return result;
-        }
-
-        public InvoicesDetails GetAllByInvoiceId(int id)
-        {
-            var result = new InvoicesDetails();
-            try
-            {
-                using (var connect = new MySqlConnection(ParametersDB.ShopDB))
-                {
-                    connect.Open();
-                    const string queryDB = "SELECT * FROM invoicesDetails WHERE id = @id";
-                    var command = new MySqlCommand(queryDB, connect);
-                    command.Parameters.AddWithValue("id", id);
-
                     using (var reader = command.ExecuteReader())
-                    {
-                        if (reader.Read())
-                        {
-                            result = new InvoicesDetails
-                            {
-                                Id = reader.GetInt32("id"),
-                                InvoiceID = reader.GetInt32("invoiceID"),
-                                ProductID = reader.GetInt32("productID"),
-                                Quantity = reader.GetInt32("quantity"),
-                                Price = reader.GetDecimal("price"),
-                                Iva = reader.GetDecimal("iva"),
-                                SubTotal = reader.GetDecimal("Subtotal"),
-                                Total = reader.GetDecimal("total"),
-                            };
-                        }
-                        else
-                        {
-                            throw new ArgumentException("No se encuentras datos en la base de datos");
-                        }
-                    }
-                }
-            }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error DB: {ex.Message}");
-                throw;
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Error de Argumento: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
-                throw;
-            }
-            return result;
-        }
-
-        public List<InvoicesDetails> GetInvoicesDetailByInvoiceIDRepo(int invoiceID)
-        {
-            var result = new List<InvoicesDetails>();
-            try
-            {
-                using (MySqlConnection connect = new MySqlConnection(ParametersDB.ShopDB))
-                {
-                    connect.Open();
-                    string queryDb = "SELECT * FROM invoicesdetails WHERE invoiceID = @invoiceID";
-                    var commandMysql = new MySqlCommand(queryDb, connect);
-                    commandMysql.Parameters.AddWithValue("@invoiceID", invoiceID);
-
-                    using (var reader = commandMysql.ExecuteReader())
                     {
                         while (reader.Read())
                         {
                             result.Add(new InvoicesDetails
-                            {
+                            {  
                                 Id = reader.GetInt32("id"),
                                 InvoiceID = reader.GetInt32("invoiceID"),
                                 ProductID = reader.GetInt32("productID"),
@@ -141,6 +44,50 @@ namespace Repository.MysqlServers
                 Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error Inesperado: {ex.Message}");
+                throw;
+            }
+            return result;
+        }
+
+        public InvoicesDetails GetById(int id)
+        {
+            var result = new InvoicesDetails();
+            try
+            {
+                const string queryDB = "SELECT * FROM invoicesDetails WHERE id = @id";
+                var command = CreateMySqlCommand(queryDB);
+                command.Parameters.AddWithValue("id", id);
+
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
+                    {
+                        result = new InvoicesDetails
+                        {
+                            Id = reader.GetInt32("id"),
+                            InvoiceID = reader.GetInt32("invoiceID"),
+                            ProductID = reader.GetInt32("productID"),
+                            Quantity = reader.GetInt32("quantity"),
+                            Price = reader.GetDecimal("price"),
+                            Iva = reader.GetDecimal("iva"),
+                            SubTotal = reader.GetDecimal("Subtotal"),
+                            Total = reader.GetDecimal("total"),
+                        };
+                    }
+                    else
+                    {
+                        throw new ArgumentException("No se encuentras datos en la base de datos");
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error DB: {ex.Message}");
+                throw;
+            }
             catch (ArgumentException ex)
             {
                 Console.WriteLine($"Error de Argumento: {ex.Message}");
@@ -154,7 +101,52 @@ namespace Repository.MysqlServers
             return result;
         }
 
-        public void InsertInvoiceDetailRepo(int invoiceID, List<InvoicesDetails> details, MySqlConnection connect, MySqlTransaction transaction)
+        public IEnumerable<InvoicesDetails> GetByInvoiceId(int invoiceID)
+        {
+            var result = new List<InvoicesDetails>();
+            try
+            {
+                string queryDb = "SELECT * FROM invoicesdetails WHERE invoiceID = @invoiceID";
+                var commandMysql = CreateMySqlCommand(queryDb);
+                commandMysql.Parameters.AddWithValue("@invoiceID", invoiceID);
+
+                using (var reader = commandMysql.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        result.Add(new InvoicesDetails
+                        {
+                            Id = reader.GetInt32("id"),
+                            InvoiceID = reader.GetInt32("invoiceID"),
+                            ProductID = reader.GetInt32("productID"),
+                            Quantity = reader.GetInt32("quantity"),
+                            Price = reader.GetDecimal("price"),
+                            Iva = reader.GetDecimal("iva"),
+                            SubTotal = reader.GetDecimal("Subtotal"),
+                            Total = reader.GetDecimal("total"),
+                        });
+                    }
+                }
+            }
+            catch (MySqlException ex)
+            {
+                Console.WriteLine($"Error DB: {ex.Message}");
+                throw;
+            }
+            catch (ArgumentException ex)
+            {
+                Console.WriteLine($"Error de Argumento: {ex.Message}");
+                throw;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error Inesperado: {ex.Message}");
+                throw;
+            }
+            return result;
+        }
+
+        public void Create(IEnumerable<InvoicesDetails> details, int invoiceID)
         {
             try
             {
@@ -163,7 +155,7 @@ namespace Repository.MysqlServers
                     "VALUES (@A,@B,@C,@D,@E,@F,@G)";
                 foreach (var detail in details)
                 {
-                    using (var command = new MySqlCommand(queryDB, connect, transaction))
+                    using (var command = CreateMySqlCommand(queryDB))
                     {
                         command.Parameters.AddWithValue("@A", invoiceID);
                         command.Parameters.AddWithValue("@B", detail.ProductID);
@@ -183,12 +175,12 @@ namespace Repository.MysqlServers
             }
         }
 
-        public void DeleteInvoiceDetailRepo(int invoiceID, MySqlConnection connect, MySqlTransaction transaction)
+        public void RemoveByInvoiceId(int invoiceID)
         {
             try
             {
                 const string queryDB = "Delete FROM invoicesdetails WHERE invoiceID=@invoiceID";
-                using (var command = new MySqlCommand(queryDB, connect, transaction))
+                using (var command = CreateMySqlCommand(queryDB))
                 {
                     command.Parameters.AddWithValue("@invoiceID", invoiceID);
                     command.ExecuteNonQuery();
@@ -201,14 +193,5 @@ namespace Repository.MysqlServers
             }
         }
 
-        public void Create(IEnumerable<InvoicesDetails> model, int invoiceId)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void RemoveByInvoiceId(int invoiceId)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

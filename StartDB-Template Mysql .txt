@@ -1,0 +1,132 @@
+SHOW DATABASES;
+CREATE DATABASE TestNET;
+DROP DATABASE TestNET;
+USE TestNET;
+SHOW TABLES;
+
+SELECT (NOW() - INTERVAL 5 HOUR); -- Resta 5 horas a la fecha y hora actual
+
+DROP TABLE clients;
+CREATE TABLE clients (
+	id INT AUTO_INCREMENT,
+	name VARCHAR (40),
+	PRIMARY KEY (id)
+);
+
+DROP TABLE products;
+CREATE TABLE products (
+	id INT AUTO_INCREMENT,
+	name VARCHAR (40),
+	price DECIMAL,
+	PRIMARY KEY (id)
+);
+
+
+DROP TABLE invoices;
+CREATE TABLE invoices (
+	id INT AUTO_INCREMENT NOT NULL,
+	clientID INT,
+	iva DECIMAL,
+	subtotal DECIMAL,
+	total DECIMAL,
+	insertDate DATETIME DEFAULT (NOW() - INTERVAL 5 HOUR),
+	PRIMARY KEY (id),
+	CONSTRAINT FOREIGN KEY (clientID)
+		REFERENCES TestNET.clients(id) ON DELETE CASCADE
+);
+
+DROP TABLE invoicesDetails;
+CREATE TABLE invoicesDetails (
+	id INT AUTO_INCREMENT NOT NULL,
+	invoiceID INT,
+	productID INT,
+	quantity INT,
+	price DECIMAL,
+	iva DECIMAL,
+	subtotal DECIMAL,
+	total DECIMAL,
+	insertDate DATETIME DEFAULT (NOW() - INTERVAL 5 HOUR),
+	PRIMARY KEY (id),
+	CONSTRAINT FOREIGN KEY (invoiceID)
+		REFERENCES TestNET.invoices(id) ON DELETE CASCADE,
+	CONSTRAINT FOREIGN KEY (productID)
+		REFERENCES TestNET.products(id) ON DELETE CASCADE;
+);
+
+
+
+
+insert into clients (name) 
+values 
+("Isabella"), 
+("Leidy"),
+("Rosmery"),
+("Juan"),
+("Fadul");
+
+insert into products (name, price) 
+values 
+("jean", 1000),
+("gorras", 2000),
+("camisas", 3000),
+("sueter", 4000),
+("zapatos", 5000);
+
+
+insert into invoices (clientID, iva, subtotal, total)
+values 
+(1, 19, 10000, 10019),
+(2, 19, 8000, 8019),
+(3, 19, 6000, 6019),
+(4, 19, 4000, 4019),
+(5, 19, 2000, 2019);
+
+insert into invoicesdetails (invoiceID, productID, quantity, price, iva, subtotal, total)
+values 
+(1, 5, 2, 5000, 19, 10000, 10019),
+(2, 4, 2, 4000, 19, 8000, 8019),
+(3, 3, 2, 3000, 19, 6000, 6019),
+(4, 2, 2, 2000, 19, 4000, 4019),
+(5, 1, 2, 1000, 19, 2000, 2019);
+
+select * from clients;
+select * from products;
+select * from invoices;
+select * from invoicesdetails;
+
+select
+invoicesdetails.id "id d",
+invoicesdetails.invoiceID,
+invoicesdetails.productID,
+invoicesdetails.quantity,
+invoicesdetails.price,
+invoicesdetails.iva,
+invoicesdetails.subtotal,
+invoicesdetails.total,
+invoices.id as "id in",
+invoices.clientID "id C",
+invoices.iva,
+invoices.subtotal,
+invoices.total
+from invoicesdetails 
+join invoices on invoicesdetails.invoiceID = invoices.id
+-- where invoicesdetails.id = 1
+;
+
+
+SELECT * FROM invoicesdetails WHERE invoiceID = 1;
+
+select 
+invoices.clientID,
+clients.name,
+invoicesdetails.id,
+invoicesdetails.productID,
+invoicesdetails.quantity,
+invoicesdetails.price,
+invoices.iva,
+invoices.subtotal,
+invoices.total
+from invoices
+join clients on clients.id = invoices.clientID
+join invoicesdetails on invoicesdetails.invoiceID = invoices.id
+where invoices.id = 1;

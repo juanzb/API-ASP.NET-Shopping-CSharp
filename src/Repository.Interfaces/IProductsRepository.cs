@@ -1,6 +1,9 @@
-﻿namespace Repository.Interfaces
+﻿using Models;
+using Repository.Interfaces.Actions;
+
+namespace Repository.Interfaces
 {
-    internal interface IProductsRepository
+    public interface IProductsRepository : IReadRepository<Products, int>
     {
     }
 }

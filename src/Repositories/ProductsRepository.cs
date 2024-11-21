@@ -1,33 +1,35 @@
 ﻿using Models;
 using MySql.Data.MySqlClient;
 using Parameters;
+using Repository.Interfaces;
 
 namespace Repository.MysqlServers
 {
-    public class ProductsRepository
+    public class ProductsRepository : Repository, IProductsRepository
     {
-        public List<Products> AllProductsRepo()
+        public ProductsRepository(MySqlConnection connect, MySqlTransaction transaction)
+        {
+            this._connect = connect;
+            this._transaction = transaction;
+        }
+        public List<Products> GetAll()
         {
             var result = new List<Products>();
             try
             {
-                using (var connect = new MySqlConnection(ParametersDB.ShopDB))
+                const string queryDb = "SELECT * FROM products";
+                using (var command = CreateMySqlCommand(queryDb))
                 {
-                    connect.Open();
-                    const string queryDb = "SELECT * FROM products";
-                    using (var command = new MySqlCommand(queryDb, connect))
+                    using (var reader = command.ExecuteReader())
                     {
-                        using (var reader = command.ExecuteReader())
+                        while (reader.Read())
                         {
-                            while (reader.Read())
+                            result.Add(new Products
                             {
-                                result.Add(new Products
-                                {
-                                    Id = reader.GetInt32("id"),
-                                    Name = reader.GetString("name"),
-                                    Price = reader.GetDecimal("price"),
-                                });
-                            }
+                                Id = reader.GetInt32("id"),
+                                Name = reader.GetString("name"),
+                                Price = reader.GetDecimal("price"),
+                            });
                         }
                     }
                 }
@@ -45,33 +47,29 @@ namespace Repository.MysqlServers
             return result;
         }
 
-        public Products GetProductsRepo(int id)
+        public Products GetById(int id)
         {
             var result = new Products();
             try
             {
-                using (var connect = new MySqlConnection(ParametersDB.ShopDB))
-                {
-                    connect.Open();
-                    const string queryDB = "SELECT * FROM products WHERE id = @id";
-                    var command = new MySqlCommand(queryDB, connect);
-                    command.Parameters.AddWithValue("id", id);
+                const string queryDB = "SELECT * FROM products WHERE id = @id";
+                var command = CreateMySqlCommand(queryDB);
+                command.Parameters.AddWithValue("id", id);
 
-                    using (var reader = command.ExecuteReader())
+                using (var reader = command.ExecuteReader())
+                {
+                    if (reader.Read())
                     {
-                        if (reader.Read())
+                        result = new Products
                         {
-                            result = new Products
-                            {
-                                Id = reader.GetInt32("id"),
-                                Name = reader.GetString("name"),
-                                Price = reader.GetDecimal("price")
-                            };
-                        }
-                        else
-                        {
-                            throw new ArgumentException("No se encuentras datos en la base de datos");
-                        }
+                            Id = reader.GetInt32("id"),
+                            Name = reader.GetString("name"),
+                            Price = reader.GetDecimal("price")
+                        };
+                    }
+                    else
+                    {
+                        throw new ArgumentException("No se encuentras datos en la base de datos");
                     }
                 }
             }
@@ -93,20 +91,16 @@ namespace Repository.MysqlServers
             return result;
         }
 
-        public void CreateProductsRepo(Products product)
+        public void Create(Products product)
         {
             try
             {
-                using (MySqlConnection connect = new MySqlConnection(ParametersDB.ShopDB))
+                const string queryDB = "INSERT INTO products (name, price) VALUES (@A,@B)";
+                using (MySqlCommand command = CreateMySqlCommand(queryDB))
                 {
-                    connect.Open();
-                    const string queryDB = "INSERT INTO products (name, price) VALUES (@A,@B)";
-                    using (MySqlCommand command = new MySqlCommand(queryDB, connect))
-                    {
-                        command.Parameters.AddWithValue("@A", product.Name);
-                        command.Parameters.AddWithValue("@B", product.Price);
-                        command.ExecuteNonQuery();
-                    }
+                    command.Parameters.AddWithValue("@A", product.Name);
+                    command.Parameters.AddWithValue("@B", product.Price);
+                    command.ExecuteNonQuery();
                 }
 
             }
@@ -122,22 +116,18 @@ namespace Repository.MysqlServers
             }
         }
 
-        public void UpdateProductsRepo(int productID, Products product)
+        public void Update(int productID, Products product)
         {
             try
             {
-                using (MySqlConnection connect = new MySqlConnection(ParametersDB.ShopDB))
+                const string queryDB = "UPDATE products SET name=@A, price=@B WHERE id=@productID";
+                using (MySqlCommand command = CreateMySqlCommand(queryDB))
                 {
-                    connect.Open();
-                    const string queryDB = "UPDATE products SET name=@A, price=@B WHERE id=@productID";
-                    using (MySqlCommand command = new MySqlCommand(queryDB, connect))
-                    {
-                        command.Parameters.AddWithValue("@productID", productID);
-                        command.Parameters.AddWithValue("@A", product.Name);
-                        command.Parameters.AddWithValue("@B", product.Price);
-                        var res = command.ExecuteNonQuery();
-                        if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
-                    }
+                    command.Parameters.AddWithValue("@productID", productID);
+                    command.Parameters.AddWithValue("@A", product.Name);
+                    command.Parameters.AddWithValue("@B", product.Price);
+                    var res = command.ExecuteNonQuery();
+                    if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
                 }
             }
             catch (MySqlException ex)
@@ -157,20 +147,16 @@ namespace Repository.MysqlServers
             }
         }
 
-        public void DeleteClientRepo(int productID)
+        public void Remove(int productID)
         {
             try
             {
-                using (MySqlConnection connect = new MySqlConnection(ParametersDB.ShopDB))
+                const string queryDb = "DELETE FROM products WHERE id=@productID";
+                using (MySqlCommand command = CreateMySqlCommand(queryDb))
                 {
-                    connect.Open();
-                    const string queryDb = "DELETE FROM products WHERE id=@productID";
-                    using (MySqlCommand command = new MySqlCommand(queryDb, connect))
-                    {
-                        command.Parameters.AddWithValue("@productID", productID);
-                        var res = command.ExecuteNonQuery();
-                        if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
-                    }
+                    command.Parameters.AddWithValue("@productID", productID);
+                    var res = command.ExecuteNonQuery();
+                    if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
                 }
             }
             catch (MySqlException ex)

@@ -34,9 +34,14 @@ namespace Repository.MysqlServers
                                 ClientID = reader.GetInt32("clientID"),
                             });
                         }
+                    }
+                    foreach (var invoice in result)
+                    {
+                        //ClientsRepository clientRepository = new ClientsRepository(_connect, _transaction);
+                        //invoice.Client = clientRepository.GetById(invoice.ClientID);
 
-                        
-
+                        //InvoicesDetailsRepository invoiceDetailRepository = new InvoicesDetailsRepository(_connect, _transaction);
+                        //invoice.Detail.Add(invoiceDetailRepository.GetById(invoice.Id));
                     }
                 }
             }
@@ -74,6 +79,13 @@ namespace Repository.MysqlServers
                             SubTotal = reader.GetDecimal("subtotal"),
                             Total = reader.GetDecimal("total"),
                         };
+
+                        //ClientsRepository clientRepository = new ClientsRepository(_connect, _transaction);
+                        //result.Client =  clientRepository.GetById(result.ClientID);
+
+                        //InvoicesDetailsRepository invoiceDetailRepository = new InvoicesDetailsRepository(_connect, _transaction);
+                        //result.Detail.Add(invoiceDetailRepository.GetById(id));
+
                     }
                     else
                     {
@@ -115,12 +127,12 @@ namespace Repository.MysqlServers
                     invoice.Id = Convert.ToInt32(command.LastInsertedId);
                 }
 
-                InvoicesDetailsRepository invoiceDetailsRepo = new InvoicesDetailsRepository();
+                InvoicesDetailsRepository invoiceRepository = new InvoicesDetailsRepository(_connect, _transaction);
                 // Insertar data de la compra en la tabal "invoicedetails"
-                invoiceDetailsRepo.InsertInvoiceDetailRepo(invoice.Id, invoice.Detail, _connect, _transaction);
+                invoiceRepository.Create(invoice.Detail, invoice.Id);
 
                 // Fin de la Transacción
-                transaction.Commit();
+                _transaction.Commit();
             }
             catch (MySqlException ex)
             {
@@ -139,7 +151,7 @@ namespace Repository.MysqlServers
             throw new NotImplementedException();
         }
 
-        public void Update(Invoices t)
+        public void Update(Invoices invoice)
         {
             throw new NotImplementedException();
         }
