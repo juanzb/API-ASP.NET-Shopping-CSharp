@@ -19,6 +19,7 @@ namespace UnitOfWork.MysqlServer
 
             Repositories = new UnidOfWorkMySqlServerRepository(_connect, _transaction);
         }
+
         public void Dispose()
         {
             if (_transaction != null)

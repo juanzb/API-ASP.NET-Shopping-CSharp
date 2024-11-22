@@ -1,6 +1,8 @@
 ﻿using Models;
-using Repositories;
+//using Repositories;
 using Services;
+using UnitOfWork.Interfaces;
+using UnitOfWork.MysqlServer;
 
 namespace Shopping
 {
@@ -8,9 +10,10 @@ namespace Shopping
     {
         static void Main()
         {
-            var ServiceInvoice = new InvoicesServices();
-            var se = new ClientsServices();
-            var p = new ProductsRepository();
+            var unitofwork = new UnidOfWorkMySqlServer();
+            var serviceInvoice = new InvoicesServices(unitofwork);
+            //var se = new ClientsServices();
+            //var p = new ProductsRepository();
             //var ServiceInvoice = new InvoicesServices();
             //var all = ServiceInvoice.AllInvoicesService();
             //var invoice = ServiceInvoice.GetInvoiceService(5);
@@ -47,6 +50,10 @@ namespace Shopping
 
             try
             {
+                //serviceInvoice.CreateInvoiceService(newInvoice);
+                serviceInvoice.DeleteInvoiceService(64);
+                Invoices data = serviceInvoice.GetInvoiceService(64);
+
                 //var pp = p.AllProductsRepo();
                 //foreach (var item in pp)
                 //{

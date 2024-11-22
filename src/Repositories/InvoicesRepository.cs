@@ -35,14 +35,6 @@ namespace Repository.MysqlServers
                             });
                         }
                     }
-                    foreach (var invoice in result)
-                    {
-                        //ClientsRepository clientRepository = new ClientsRepository(_connect, _transaction);
-                        //invoice.Client = clientRepository.GetById(invoice.ClientID);
-
-                        //InvoicesDetailsRepository invoiceDetailRepository = new InvoicesDetailsRepository(_connect, _transaction);
-                        //invoice.Detail.Add(invoiceDetailRepository.GetById(invoice.Id));
-                    }
                 }
             }
             catch (MySqlException ex)
@@ -79,13 +71,6 @@ namespace Repository.MysqlServers
                             SubTotal = reader.GetDecimal("subtotal"),
                             Total = reader.GetDecimal("total"),
                         };
-
-                        //ClientsRepository clientRepository = new ClientsRepository(_connect, _transaction);
-                        //result.Client =  clientRepository.GetById(result.ClientID);
-
-                        //InvoicesDetailsRepository invoiceDetailRepository = new InvoicesDetailsRepository(_connect, _transaction);
-                        //result.Detail.Add(invoiceDetailRepository.GetById(id));
-
                     }
                     else
                     {

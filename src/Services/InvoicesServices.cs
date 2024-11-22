@@ -1,9 +1,6 @@
 ﻿using Models;
 using MySql.Data.MySqlClient;
-using Mysqlx.Session;
-using MySqlX.XDevAPI.Common;
 using Parameters;
-using System;
 using UnitOfWork.Interfaces;
 
 namespace Services
@@ -29,11 +26,12 @@ namespace Services
                     foreach (var invoice in allInvoices)
                     {
                         invoice.Client = connect.Repositories.ClientsRepository.GetById(invoice.ClientID);
-                        invoice.Detail = connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(invoice.Id);
+                        invoice.Detail = (List<InvoicesDetails>)connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(invoice.Id);
 
                         foreach (var item in invoice.Detail)
                         {
                             item.Product = connect.Repositories.ProductsRepository.GetById(item.ProductID);
+                            item.Invoice = invoice;
                         }
 
                         result.Add(invoice);
@@ -62,11 +60,12 @@ namespace Services
                 {
                     result = connect.Repositories.InvoiceRepository.GetById(id);
                     result.Client = connect.Repositories.ClientsRepository.GetById(result.ClientID);
-                    result.Detail = connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(result.Id);
+                    result.Detail = (List<InvoicesDetails>)connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(result.Id);
 
                     foreach (var item in result.Detail)
                     {
                         item.Product = connect.Repositories.ProductsRepository.GetById(item.ProductID);
+                        item.Invoice = result;
                     }
                 }
             }

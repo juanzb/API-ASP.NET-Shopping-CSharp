@@ -8,7 +8,7 @@ namespace Models
 {
     public class Invoices
     {
-        public IEnumerable<InvoicesDetails> Detail { get; set; }
+        public List<InvoicesDetails> Detail { get; set; }
         public int Id { get; set; }
         public int ClientID { get; set; }
         public Clients Client { get; set; }

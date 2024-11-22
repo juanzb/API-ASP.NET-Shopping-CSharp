@@ -19,5 +19,6 @@ namespace UnitOfWork.MysqlServer
             InvoiceDetailsRespository = new InvoicesDetailsRepository (connect, transaction);
             ProductsRepository = new ProductsRepository(connect, transaction);
         }
+
     }
 }
