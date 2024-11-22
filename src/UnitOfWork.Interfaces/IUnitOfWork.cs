@@ -3,6 +3,5 @@
     public interface IUnitOfWork
     {
         IUnitOfWorkAdapter Create();
-
     }
 }

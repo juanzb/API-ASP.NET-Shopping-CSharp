@@ -8,7 +8,7 @@ namespace UnitOfWork.MysqlServer
     {
         private MySqlConnection _connect { get; set; }
         private MySqlTransaction _transaction { get; set; }
-        public IUnitOfWorkRepository Repositories {  get; set; }
+        public IUnitOfWorkRepository Repositories { get; set; }
 
         public UnidOfWorkMySqlServerAdapter()
         {
@@ -26,7 +26,8 @@ namespace UnitOfWork.MysqlServer
             {
                 _transaction.Dispose();
             }
-            else if (_connect != null) { 
+            else if (_connect != null)
+            {
                 _connect.Close();
                 _connect.Dispose();
             }
@@ -38,5 +39,6 @@ namespace UnitOfWork.MysqlServer
         {
             _transaction.Commit();
         }
+
     }
 }

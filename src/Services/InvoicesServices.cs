@@ -21,7 +21,7 @@ namespace Services
             {
                 using (var connect = _unitOfWOrk.Create())
                 {
-                    var allInvoices = connect.Repositories.InvoiceRepository.GetAll();
+                    List<Invoices> allInvoices = connect.Repositories.InvoiceRepository.GetAll();
 
                     foreach (var invoice in allInvoices)
                     {
@@ -93,11 +93,14 @@ namespace Services
             {
                 // preparando la data para insertar en base de datos
                 PepareModal(invoice);
-
+                
                 // Se Agrega la data de la compra en la base de datos
                 using (var connect = _unitOfWOrk.Create())
                 {
-                    connect.Repositories.InvoiceRepository.Create(invoice);
+                    int lastInvoiceId = connect.Repositories.InvoiceRepository.Create(invoice);
+                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail, lastInvoiceId);
+
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -107,7 +110,7 @@ namespace Services
             }
         }
 
-        public void UpdateInvoiceService(Invoices invoice)
+        public void UpdateInvoiceService(Invoices invoice, int invoiceId)
         {
             try
             {
@@ -117,7 +120,11 @@ namespace Services
                 // Se Actualiza la data de la compra en la base de datos
                 using (var connect = _unitOfWOrk.Create())
                 {
-                    connect.Repositories.InvoiceRepository.Update(invoice);
+                    connect.Repositories.InvoiceRepository.Update(invoice, invoiceId);
+                    connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoiceId);
+                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail, invoiceId);
+
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -134,6 +141,8 @@ namespace Services
                 using (var connect = _unitOfWOrk.Create())
                 {
                     connect.Repositories.InvoiceRepository.Remove(invoiceID);
+                    connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoiceID);
+                    connect.SaveChanges();
                 }
             }
             catch (ArgumentException ex)
@@ -161,66 +170,5 @@ namespace Services
             model.SubTotal = model.Detail.Sum(x => x.SubTotal);
         }
 
-        //        private void SetClient(Invoices invoice)
-        //        {
-        //            try
-        //            {
-        //                Clients client = new ClientsRepository().GetClientRepo(invoice.ClientID);
-
-        //                invoice.ClientID = client.Id;
-        //                invoice.Client = new Clients
-        //                {
-        //                    Id = client.Id,
-        //                    Name = client.Name
-        //                };
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine($"Error SetClient: {ex.Message}");
-        //                throw;
-        //            }
-        //        }
-
-        //        private void SetDetails(Invoices invoice)
-        //        {
-        //            try
-        //            {
-        //                List<InvoicesDetails> detailsGet = new InvoicesDetailsRepo().GetInvoicesDetailByInvoiceIDRepo(invoice.Id);
-
-        //                foreach (var detail in detailsGet)
-        //                {
-        //                    detail.Invoice = invoice;
-
-        //                    // Products
-        //                    SetProduct(detail);
-        //                }
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine($"Error SetDetail: {ex.Message}");
-        //                throw;
-        //            }
-        //        }
-
-        //        private void SetProduct(InvoicesDetails detail)
-        //        {
-        //            try
-        //            {
-        //                Products productGet = new ProductsRepository().GetProductsRepo(detail.ProductID);
-
-        //                detail.Product = new Products
-        //                {
-        //                    Id = productGet.Id,
-        //                    Name = productGet.Name,
-        //                    Price = productGet.Price
-        //                };
-        //            }
-        //            catch (Exception ex)
-        //            {
-        //                Console.WriteLine($"Error SetProduct: {ex.Message}");
-        //                throw;
-        //            }
-        //        }
-        //    }
     }
 }
