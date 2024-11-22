@@ -1,6 +1,5 @@
 ﻿using Models;
 using MySql.Data.MySqlClient;
-using Parameters;
 using Repository.Interfaces;
 
 namespace Repository.MysqlServers

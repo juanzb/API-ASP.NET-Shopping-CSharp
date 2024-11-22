@@ -7,9 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MySql.Data" Version="9.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
     <ProjectReference Include="..\Parameters\Parameters.csproj" />
-    <ProjectReference Include="..\Repositories\Repository.MysqlServers.csproj" />
     <ProjectReference Include="..\UnitOfWork.Interfaces\UnitOfWork.Interfaces.csproj" />
   </ItemGroup>
 

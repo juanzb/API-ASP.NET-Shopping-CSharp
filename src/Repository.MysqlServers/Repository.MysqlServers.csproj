@@ -12,7 +12,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Models\Models.csproj" />
-    <ProjectReference Include="..\Parameters\Parameters.csproj" />
     <ProjectReference Include="..\Repository.Interfaces\Repository.Interfaces.csproj" />
   </ItemGroup>
 

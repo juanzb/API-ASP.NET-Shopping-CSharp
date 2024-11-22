@@ -47,7 +47,7 @@ namespace Shopping
 
             try
             {
-                //List<Invoices> datos = serviceInvoice.AllInvoicesService();
+                List<Invoices> datos = serviceInvoice.AllInvoicesService();
                 //Invoices data = serviceInvoice.GetInvoiceService(4);
                 //serviceInvoice.CreateInvoiceService(newInvoice);
                 //serviceInvoice.UpdateInvoiceService(newInvoice, 10);
