@@ -2,7 +2,7 @@
 {
     public interface ICreateRepository<T> where T : class
     {
-        int Create(T t);
+        void Create(T t);
 
     }
 }

@@ -47,11 +47,11 @@ namespace Shopping
 
             try
             {
-                List<Invoices> datos = serviceInvoice.AllInvoicesService();
-                //Invoices data = serviceInvoice.GetInvoiceService(4);
                 //serviceInvoice.CreateInvoiceService(newInvoice);
                 //serviceInvoice.UpdateInvoiceService(newInvoice, 10);
                 //serviceInvoice.DeleteInvoiceService(10);
+                List<Invoices> datos = serviceInvoice.AllInvoicesService();
+                //Invoices data = serviceInvoice.GetInvoiceService(4);
 
                 Console.WriteLine("Compra exitosa, que tenga un buen día!");
             }

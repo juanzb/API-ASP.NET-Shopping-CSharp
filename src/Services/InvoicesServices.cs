@@ -1,5 +1,4 @@
 ﻿using Models;
-using MySql.Data.MySqlClient;
 using Parameters;
 using UnitOfWork.Interfaces;
 
@@ -38,14 +37,9 @@ namespace Services
                     }
                 }
             }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error DB: {ex.Message}");
-                throw;
-            }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
+                Console.WriteLine($"Error en AllInvoicesService: {ex.Message}");
                 throw;
             }
             return result;
@@ -69,19 +63,9 @@ namespace Services
                     }
                 }
             }
-            catch (MySqlException ex)
-            {
-                Console.WriteLine($"Error DB: {ex.Message}");
-                throw;
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Error Argument: {ex.Message}");
-                throw;
-            }
             catch (Exception ex)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
+                Console.WriteLine($"Error en GetInvoiceService: {ex.Message}");
                 throw;
             }
             return result;
@@ -97,8 +81,8 @@ namespace Services
                 // Se Agrega la data de la compra en la base de datos
                 using (var connect = _unitOfWOrk.Create())
                 {
-                    int lastInvoiceId = connect.Repositories.InvoiceRepository.Create(invoice);
-                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail, lastInvoiceId);
+                    connect.Repositories.InvoiceRepository.Create(invoice);
+                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail, invoice.Id);
 
                     connect.SaveChanges();
                 }
@@ -144,11 +128,6 @@ namespace Services
                     connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoiceID);
                     connect.SaveChanges();
                 }
-            }
-            catch (ArgumentException ex)
-            {
-                Console.WriteLine($"Error Argument: {ex.Message}");
-                throw;
             }
             catch (Exception ex)
             {

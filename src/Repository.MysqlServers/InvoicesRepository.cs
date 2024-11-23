@@ -95,9 +95,8 @@ namespace Repository.MysqlServers
             return result;
         }
 
-        public int Create(Invoices invoice)
+        public void Create(Invoices invoice)
         {
-            int lastInvoiceId;
             try
             {
                 const string queryDB = "INSERT INTO invoices (clientID, iva, subtotal, total) VALUES (@A,@B,@C,@D)";
@@ -109,7 +108,7 @@ namespace Repository.MysqlServers
                     command.Parameters.AddWithValue("@D", invoice.Total);
                     command.ExecuteNonQuery();
 
-                    lastInvoiceId = invoice.Id = Convert.ToInt32(command.LastInsertedId);
+                    invoice.Id = Convert.ToInt32(command.LastInsertedId);
                 }
             }
             catch (MySqlException ex)
@@ -122,7 +121,6 @@ namespace Repository.MysqlServers
                 Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
-            return lastInvoiceId;
         }
 
         public void Update(Invoices invoice, int invoiceID)
