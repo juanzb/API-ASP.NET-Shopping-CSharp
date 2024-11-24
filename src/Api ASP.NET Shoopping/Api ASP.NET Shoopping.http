@@ -1,0 +1,24 @@
+@Api_ASP.NET_Shoopping_HostAddress = http://localhost:5296
+
+GET {{Api_ASP.NET_Shoopping_HostAddress}}/invoices/
+Accept: application/json
+
+###
+
+POST {{Api_ASP.NET_Shoopping_HostAddress}}/api/home
+Content-Type: application/json
+
+"Hawaii"
+
+###
+
+PUT {{Api_ASP.NET_Shoopping_HostAddress}}/api/home/2
+Content-Type: application/json
+
+12
+
+###
+
+DELETE {{Api_ASP.NET_Shoopping_HostAddress}}/api/home/1
+Content-Type: application/json
+###

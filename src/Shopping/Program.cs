@@ -1,5 +1,6 @@
 ﻿using Models;
 using Services;
+using UnitOfWork.Interfaces;
 using UnitOfWork.MysqlServer;
 
 namespace Shopping
@@ -8,7 +9,7 @@ namespace Shopping
     {
         static void Main()
         {
-            var unitofwork = new UnidOfWorkMySqlServer();
+            IUnitOfWork unitofwork = new UnidOfWorkMySqlServer();
             var serviceInvoice = new InvoicesServices(unitofwork);
             //var serviceInvoiceDetails = new InvoicesDetailsServices(unitofwork);
             //var serviceClient = new ClientsServices(unitofwork);

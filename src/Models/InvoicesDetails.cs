@@ -6,7 +6,6 @@
         public int ProductID { get; set; }
         public Products Product { get; set; }
         public int InvoiceID { get; set; }
-        public Invoices Invoice { get; set; }
         public decimal Quantity { get; set; }
         public decimal Iva { get; set; }
         public decimal Price { get; set; }

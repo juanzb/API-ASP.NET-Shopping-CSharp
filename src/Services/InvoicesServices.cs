@@ -30,7 +30,6 @@ namespace Services
                         foreach (var item in invoice.Detail)
                         {
                             item.Product = connect.Repositories.ProductsRepository.GetById(item.ProductID);
-                            item.Invoice = invoice;
                         }
 
                         result.Add(invoice);
@@ -59,7 +58,6 @@ namespace Services
                     foreach (var item in result.Detail)
                     {
                         item.Product = connect.Repositories.ProductsRepository.GetById(item.ProductID);
-                        item.Invoice = result;
                     }
                 }
             }
