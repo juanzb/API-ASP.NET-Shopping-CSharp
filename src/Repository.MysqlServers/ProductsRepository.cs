@@ -115,14 +115,14 @@ namespace Repository.MysqlServers
             }
         }
 
-        public void Update(int productID, Products product)
+        public void Update(Products product)
         {
             try
             {
                 const string queryDB = "UPDATE products SET name=@A, price=@B WHERE id=@productID";
                 using (MySqlCommand command = CreateMySqlCommand(queryDB))
                 {
-                    command.Parameters.AddWithValue("@productID", productID);
+                    command.Parameters.AddWithValue("@productID", product.Id);
                     command.Parameters.AddWithValue("@A", product.Name);
                     command.Parameters.AddWithValue("@B", product.Price);
                     var res = command.ExecuteNonQuery();

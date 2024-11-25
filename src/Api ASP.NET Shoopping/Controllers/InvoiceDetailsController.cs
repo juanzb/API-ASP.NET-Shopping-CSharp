@@ -17,22 +17,17 @@ namespace Api_ASP.NET_Shoopping.Controllers
 
 
         [HttpGet]
-        public List<InvoicesDetails> GetAll()
+        public ActionResult GetAll()
         {
             try
             {
                 List<InvoicesDetails> result = _serviceDetails.AllInvoiceDetailsService();
-                return result;   
+                return CreatedAtAction(nameof(GetAll), new { result });
             }
             catch (Exception ex)
-            { 
+            {
                 return BadRequest(ex.Message);
             }
-        }
-
-        public ActionResult Details(int id)
-        {
-            return View();
         }
     }
 }

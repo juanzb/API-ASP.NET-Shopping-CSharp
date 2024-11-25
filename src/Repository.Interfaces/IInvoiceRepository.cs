@@ -3,7 +3,11 @@ using Repository.Interfaces.Actions;
 
 namespace Repository.Interfaces
 {
-    public interface IInvoiceRepository : IReadRepository<Invoices, int>, ICreateRepository<Invoices>, IUpdateRepository<Invoices>, IRemoveRepository<int>
+    public interface IInvoiceRepository : 
+        IReadRepository<Invoices, int>, 
+        ICreateRepository<Invoices>,
+        IUpdateRepository<Invoices>,
+        IRemoveRepository<int>
     {
     }
 }

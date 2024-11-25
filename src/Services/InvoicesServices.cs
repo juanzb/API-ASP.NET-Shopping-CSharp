@@ -15,7 +15,7 @@ namespace Services
 
         public List<Invoices> AllInvoicesService()
         {
-            var result = new List<Invoices>();
+            List<Invoices> result = new List<Invoices>();
             try
             {
                 using (var connect = _unitOfWOrk.Create())
@@ -25,7 +25,7 @@ namespace Services
                     foreach (var invoice in allInvoices)
                     {
                         invoice.Client = connect.Repositories.ClientsRepository.GetById(invoice.ClientID);
-                        invoice.Detail = (List<InvoicesDetails>)connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(invoice.Id);
+                        invoice.Detail = connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(invoice.Id);
 
                         foreach (var item in invoice.Detail)
                         {
@@ -53,7 +53,7 @@ namespace Services
                 {
                     result = connect.Repositories.InvoiceRepository.GetById(id);
                     result.Client = connect.Repositories.ClientsRepository.GetById(result.ClientID);
-                    result.Detail = (List<InvoicesDetails>)connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(result.Id);
+                    result.Detail = connect.Repositories.InvoiceDetailsRespository.GetByInvoiceId(result.Id);
 
                     foreach (var item in result.Detail)
                     {
@@ -80,7 +80,7 @@ namespace Services
                 using (var connect = _unitOfWOrk.Create())
                 {
                     connect.Repositories.InvoiceRepository.Create(invoice);
-                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail, invoice.Id);
+                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail);
 
                     connect.SaveChanges();
                 }
@@ -92,7 +92,7 @@ namespace Services
             }
         }
 
-        public void UpdateInvoiceService(Invoices invoice, int invoiceId)
+        public void UpdateInvoiceService(Invoices invoice)
         {
             try
             {
@@ -102,9 +102,9 @@ namespace Services
                 // Se Actualiza la data de la compra en la base de datos
                 using (var connect = _unitOfWOrk.Create())
                 {
-                    connect.Repositories.InvoiceRepository.Update(invoice, invoiceId);
-                    connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoiceId);
-                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail, invoiceId);
+                    connect.Repositories.InvoiceRepository.Update(invoice);
+                    connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoice.Id);
+                    connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail);
 
                     connect.SaveChanges();
                 }
@@ -123,7 +123,7 @@ namespace Services
                 using (var connect = _unitOfWOrk.Create())
                 {
                     connect.Repositories.InvoiceRepository.Remove(invoiceID);
-                    connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoiceID);
+                    //connect.Repositories.InvoiceDetailsRespository. RemoveByInvoiceId(invoiceID);
                     connect.SaveChanges();
                 }
             }

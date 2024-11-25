@@ -100,7 +100,7 @@ namespace Repository.MysqlServers
             return result;
         }
 
-        public IEnumerable<InvoicesDetails> GetByInvoiceId(int invoiceID)
+        public List<InvoicesDetails> GetByInvoiceId(int invoiceID)
         {
             var result = new List<InvoicesDetails>();
             try
@@ -145,7 +145,7 @@ namespace Repository.MysqlServers
             return result;
         }
 
-        public void Create(IEnumerable<InvoicesDetails> details, int invoiceID)
+        public void Create(List<InvoicesDetails> details)
         {
             try
             {
@@ -156,7 +156,7 @@ namespace Repository.MysqlServers
                 {
                     using (var command = CreateMySqlCommand(queryDB))
                     {
-                        command.Parameters.AddWithValue("@A", invoiceID);
+                        command.Parameters.AddWithValue("@A", detail.InvoiceID);
                         command.Parameters.AddWithValue("@B", detail.ProductID);
                         command.Parameters.AddWithValue("@C", detail.Quantity);
                         command.Parameters.AddWithValue("@D", detail.Price);

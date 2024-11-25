@@ -1,12 +1,16 @@
 ﻿using Models;
+using Repository.Interfaces.Actions;
 
 namespace Repository.Interfaces
 {
-    public interface IInvoiceDetailsRespository
+    public interface IInvoiceDetailsRespository :
+        IReadRepository<InvoicesDetails, int>,
+        ICreateRepository<List<InvoicesDetails>>
+    //IUpdateRepository<InvoicesDetails>, 
+    //IRemoveRepository<int>
     {
-        List<InvoicesDetails> GetAll();
-        void Create(IEnumerable<InvoicesDetails> model, int invoiceId);
-        IEnumerable<InvoicesDetails> GetByInvoiceId(int invoiceId);
-        void RemoveByInvoiceId(int invoiceId);
+        List<InvoicesDetails> GetByInvoiceId(int id);
+
+        void RemoveByInvoiceId(int ID);
     }
 }

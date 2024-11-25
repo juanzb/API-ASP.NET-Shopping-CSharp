@@ -123,14 +123,14 @@ namespace Repository.MysqlServers
             }
         }
 
-        public void Update(Invoices invoice, int invoiceID)
+        public void Update(Invoices invoice)
         {
             try
             {
                 const string queryDB = "UPDATE invoices SET clientID=@A, iva=@B, subtotal=@C, total=@D WHERE id=@invoiceID";
                 using (MySqlCommand command = CreateMySqlCommand(queryDB))
                 {
-                    command.Parameters.AddWithValue("@invoiceID", invoiceID);
+                    command.Parameters.AddWithValue("@invoiceID", invoice.Id);
                     command.Parameters.AddWithValue("@A", invoice.ClientID);
                     command.Parameters.AddWithValue("@B", invoice.Iva);
                     command.Parameters.AddWithValue("@C", invoice.SubTotal);
