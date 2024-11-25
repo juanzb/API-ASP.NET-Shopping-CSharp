@@ -45,7 +45,7 @@ namespace Services
                 Console.WriteLine(ex.Message);
                 throw;
             }
-            return new Clients();
+            return result;
         }
 
         public void CreateClientService (Clients client)

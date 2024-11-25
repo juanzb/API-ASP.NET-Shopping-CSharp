@@ -1,6 +1,6 @@
 @Api_ASP.NET_Shoopping_HostAddress = http://localhost:5296
 
-GET {{Api_ASP.NET_Shoopping_HostAddress}}/invoices/
+GET {{Api_ASP.NET_Shoopping_HostAddress}}/invoices
 Accept: application/json
 
 ###
@@ -21,4 +21,13 @@ Content-Type: application/json
 
 DELETE {{Api_ASP.NET_Shoopping_HostAddress}}/api/home/1
 Content-Type: application/json
+###
+
+POST {{Api_ASP.NET_Shoopping_HostAddress}}/clients/p
+Content-Type: application/json
+
+{
+  "Name": "nueva Persona"
+}
+
 ###
