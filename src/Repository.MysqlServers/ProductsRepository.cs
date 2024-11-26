@@ -68,7 +68,7 @@ namespace Repository.MysqlServers
                     }
                     else
                     {
-                        throw new ArgumentException("No se encuentras datos en la base de datos");
+                        throw new ArgumentException("El ID no se encuentra registrado");
                     }
                 }
             }
@@ -101,7 +101,6 @@ namespace Repository.MysqlServers
                     command.Parameters.AddWithValue("@B", product.Price);
                     command.ExecuteNonQuery();
                 }
-
             }
             catch (MySqlException ex)
             {
@@ -126,7 +125,7 @@ namespace Repository.MysqlServers
                     command.Parameters.AddWithValue("@A", product.Name);
                     command.Parameters.AddWithValue("@B", product.Price);
                     var res = command.ExecuteNonQuery();
-                    if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
+                    if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
             catch (MySqlException ex)
@@ -155,7 +154,7 @@ namespace Repository.MysqlServers
                 {
                     command.Parameters.AddWithValue("@productID", productID);
                     var res = command.ExecuteNonQuery();
-                    if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
+                    if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
             catch (MySqlException ex)

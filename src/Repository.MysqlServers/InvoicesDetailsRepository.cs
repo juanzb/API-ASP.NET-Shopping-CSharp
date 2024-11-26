@@ -78,7 +78,7 @@ namespace Repository.MysqlServers
                     }
                     else
                     {
-                        throw new ArgumentException("No se encuentras datos en la base de datos");
+                        throw new ArgumentException("El ID no se encuentra registrado");
                     }
                 }
             }

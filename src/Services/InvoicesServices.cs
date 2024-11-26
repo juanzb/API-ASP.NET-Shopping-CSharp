@@ -73,15 +73,16 @@ namespace Services
         {
             try
             {
-                // preparando la data para insertar en base de datos
                 PepareModal(invoice);
-                
-                // Se Agrega la data de la compra en la base de datos
+                   
                 using (var connect = _unitOfWOrk.Create())
                 {
                     connect.Repositories.InvoiceRepository.Create(invoice);
+                    foreach (var item in invoice.Detail)
+                    {
+                        item.InvoiceID = invoice.Id;
+                    } 
                     connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail);
-
                     connect.SaveChanges();
                 }
             }
@@ -96,13 +97,15 @@ namespace Services
         {
             try
             {
-                // preparando la data para insertar en base de datos
                 PepareModal(invoice);
 
-                // Se Actualiza la data de la compra en la base de datos
                 using (var connect = _unitOfWOrk.Create())
                 {
                     connect.Repositories.InvoiceRepository.Update(invoice);
+                    foreach (var item in invoice.Detail)
+                    {
+                        item.InvoiceID = invoice.Id;
+                    }
                     connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoice.Id);
                     connect.Repositories.InvoiceDetailsRespository.Create(invoice.Detail);
 
@@ -123,7 +126,7 @@ namespace Services
                 using (var connect = _unitOfWOrk.Create())
                 {
                     connect.Repositories.InvoiceRepository.Remove(invoiceID);
-                    //connect.Repositories.InvoiceDetailsRespository. RemoveByInvoiceId(invoiceID);
+                    connect.Repositories.InvoiceDetailsRespository.RemoveByInvoiceId(invoiceID);
                     connect.SaveChanges();
                 }
             }

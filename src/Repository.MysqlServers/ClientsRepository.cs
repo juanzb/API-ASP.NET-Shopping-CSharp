@@ -67,7 +67,7 @@ namespace Repository.MysqlServers
                     }
                     else
                     {
-                        throw new ArgumentException("No se encuentras datos en la base de datos");
+                        throw new ArgumentException("El ID no se encuentra registrado");
                     }
                 }
             }
@@ -122,7 +122,7 @@ namespace Repository.MysqlServers
                     command.Parameters.AddWithValue("@clientId", client.Id);
                     command.Parameters.AddWithValue("@A", client.Name);
                     var res = command.ExecuteNonQuery();
-                    if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
+                    if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
             catch (MySqlException ex)
@@ -149,9 +149,9 @@ namespace Repository.MysqlServers
                 const string queryDb = "DELETE FROM clients WHERE id=@clientsID";
                 using (MySqlCommand command = CreateMySqlCommand(queryDb))
                 {
-                    command.Parameters.AddWithValue("@invoiceID", clientID);
+                    command.Parameters.AddWithValue("@clientsID", clientID);
                     var res = command.ExecuteNonQuery();
-                    if (res < 1) throw new ArgumentException("No existe el ID del cliente para actualizar el nombre");
+                    if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
             catch (MySqlException ex)

@@ -73,7 +73,7 @@ namespace Repository.MysqlServers
                     }
                     else
                     {
-                        throw new ArgumentException("No se encuentras datos en la base de datos");
+                        throw new ArgumentException("El ID no se encuentra registrado");
                     }
                 }
             }
@@ -136,7 +136,7 @@ namespace Repository.MysqlServers
                     command.Parameters.AddWithValue("@C", invoice.SubTotal);
                     command.Parameters.AddWithValue("@D", invoice.Total);
                     var res = command.ExecuteNonQuery();
-                    if (res < 1) throw new ArgumentException("No se encuentra en la base de datos");
+                    if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
             catch (MySqlException ex)
@@ -160,7 +160,7 @@ namespace Repository.MysqlServers
                 {
                     command.Parameters.AddWithValue("@invoiceID", id);
                     var res = command.ExecuteNonQuery();
-                    if (res < 1) throw new ArgumentException("No se encuentra en la base de datos");
+                    if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
             catch (MySqlException ex)

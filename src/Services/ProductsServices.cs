@@ -56,6 +56,7 @@ namespace Services
                 using (var connect = _unitOfWork.Create())
                 {
                     connect.Repositories.ProductsRepository.Create(product);
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -72,6 +73,7 @@ namespace Services
                 using (var connect = _unitOfWork.Create())
                 {
                     connect.Repositories.ProductsRepository.Update(product);
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -88,6 +90,7 @@ namespace Services
                 using (var connect = _unitOfWork.Create())
                 {
                     connect.Repositories.ProductsRepository.Remove(id);
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)

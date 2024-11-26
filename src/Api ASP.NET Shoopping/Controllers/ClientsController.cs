@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
-using MySqlX.XDevAPI;
 using Services;
 
 namespace Api_ASP.NET_Shoopping.Controllers
@@ -15,78 +14,82 @@ namespace Api_ASP.NET_Shoopping.Controllers
             this._serviceClients = serviceClients;
         }
 
+
         [HttpGet]
         public ActionResult<List<Clients>> GetAll()
         {
             try
             {
-                List<Clients> clients = _serviceClients.AllClientsService();
-                return CreatedAtAction(nameof(GetAll), new { clients });
+                var res = _serviceClients.AllClientsService();
+                return Ok(res);
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Clients> GetClient(int id)
+        public ActionResult<Clients> Get(int id)
         {
             Console.WriteLine("asdfsdf");
             try
             {
-                Clients client = _serviceClients.GetByIdClientService(id);
-                return CreatedAtAction(nameof(GetClient), new { client });
+                var res = _serviceClients.GetByIdClientService(id);
+                return Ok(res);
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPost]
-        public ActionResult CreateClient([FromBody] Clients client)
+        public IActionResult Create([FromBody] Clients client)
         {
             try
             {
                 _serviceClients.CreateClientService(client);
-                return CreatedAtAction(nameof(CreateClient), new { client.Name } );
+                return Ok($"El cliente '{client.Name}' se agrego correctamente");
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                throw;
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPut]
-        public ActionResult UpdateClient([FromBody] Clients client)
+        public IActionResult Update([FromBody] Clients client)
         {
             try
             {
                 _serviceClients.UpdateClientService(client);
-                return CreatedAtAction(nameof(UpdateClient), new { client });
+                return Ok($"El cliente con ID: {client.Id} se actualizo correctamente");
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
-                throw;
             }
         }
 
-        public ActionResult DeleteClient([FromBody] int clientId)
+        [HttpDelete("{id}")]
+        public IActionResult Remove(int id)
         {
             try
             {
-                Console.WriteLine(clientId);
-                _serviceClients.DeleteClientService(clientId);
-                return CreatedAtAction(nameof(DeleteClient), new { clientId });
+                _serviceClients.DeleteClientService(id);
+                return Ok($"El cliente con ID: {id} se elimino correctamente");
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
-                throw;
             }
         }
+
     }
 }

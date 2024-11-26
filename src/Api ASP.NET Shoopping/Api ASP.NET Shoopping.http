@@ -1,46 +1,125 @@
-@Api_ASP.NET_Shoopping_HostAddress = http://localhost:5296
+@HostAddress = http://localhost:5296
 
-GET {{Api_ASP.NET_Shoopping_HostAddress}}/invoices
+### Invoice ------------------------------
+GET {{HostAddress}}/invoices
 Accept: application/json
 
 ###
 
-POST {{Api_ASP.NET_Shoopping_HostAddress}}/api/home
-Content-Type: application/json
-
-"Hawaii"
+GET {{HostAddress}}/invoices/20
+Accept: application/json
 
 ###
 
-PUT {{Api_ASP.NET_Shoopping_HostAddress}}/api/home/2
-Content-Type: application/json
-
-12
-
-###
-
-DELETE {{Api_ASP.NET_Shoopping_HostAddress}}/api/home/1
-Content-Type: application/json
-###
-
-POST {{Api_ASP.NET_Shoopping_HostAddress}}/clients
+POST {{HostAddress}}/invoices
 Content-Type: application/json
 {
-  "Name": "Persona x"
+  "ClientID": 5,
+  "Detail": [
+    {
+      "ProductID": 1,
+      "Quantity": 3,
+      "Price": 1000
+      },
+    {
+      "ProductID": 5,
+      "Quantity": 10,
+      "Price": 5000
+    }
+  ]
+}
+
+###
+
+PUT {{HostAddress}}/invoices
+Content-Type: application/json
+{
+  "Id": 17,
+  "ClientID": 2,
+  "Detail": [
+    {
+      "ProductID": 4,
+      "Quantity": 2,
+      "Price": 12000
+    },
+    {
+      "ProductID": 2,
+      "Quantity": 2,
+      "Price": 2000
+    }
+  ]
 }
 ###
 
-PUT {{Api_ASP.NET_Shoopping_HostAddress}}/clients
+DELETE {{HostAddress}}/invoices/17
+Content-Type: application/json
+
+###
+
+
+### InvoicesDetails ------------------------------
+GET {{HostAddress}}/invoicesdetails
+Accept: application/json
+
+###
+
+
+
+### Products ------------------------------
+GET {{HostAddress}}/products
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/products/21
+Accept: application/json
+
+###
+
+POST {{HostAddress}}/products
 Content-Type: application/json
 {
-  "Id": 21,
-  "Name": "Peraasasa"
+  "Name": "Pantalon",
+  "Price": 10800
 }
 ###
 
-DELETE {{Api_ASP.NET_Shoopping_HostAddress}}/clients
-Content-Type: text/plain
+PUT {{HostAddress}}/products
+Content-Type: application/json
+{
+  "Id": 6,
+  "Name": "Pantaloneta",
+  "Price": 10800
+}
+###
 
-21
+DELETE {{HostAddress}}/products/10
+Content-Type: application/json
+
+###
+
+### Client ------------------------------ 
+GET {{HostAddress}}/clients
+Content-Type: application/json
+
+###
+
+POST {{HostAddress}}/clients
+Content-Type: application/json
+{
+  "Name": "Persona 12"
+}
+###
+
+PUT {{HostAddress}}/clients
+Content-Type: application/json
+{
+  "Id": 9,
+  "Name": "asdasdsd"
+}
+###
+
+DELETE {{HostAddress}}/clients/9
+Content-Type: application/json
 
 ###

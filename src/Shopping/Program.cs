@@ -31,27 +31,18 @@ namespace Shopping
                         Quantity = 10,
                         Price = 5000,
                     },
-                    //new InvoicesDetails
-                    //{
-                    //    ProductID = 2,
-                    //    Quantity = 10,
-                    //    Price = 3000,
-                    //},
-                    //new InvoicesDetails
-                    //{
-                    //    ProductID = 4,
-                    //    Quantity = 10,
-                    //    Price = 4000,
-                    //},
                 },
             };
 
             try
             {
+                newInvoice.Detail.ForEach(d => {
+                    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(d));
+                });
                 //serviceInvoice.CreateInvoiceService(newInvoice);
                 //serviceInvoice.UpdateInvoiceService(newInvoice, 10);
                 //serviceInvoice.DeleteInvoiceService(10);
-                List<Invoices> datos = serviceInvoice.AllInvoicesService();
+                //List<Invoices> datos = serviceInvoice.AllInvoicesService();
                 //Invoices data = serviceInvoice.GetInvoiceService(4);
 
                 Console.WriteLine("Compra exitosa, que tenga un buen día!");

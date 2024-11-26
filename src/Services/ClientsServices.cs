@@ -72,6 +72,7 @@ namespace Services
                 using (var connect = _unitOfWork.Create())
                 {
                     connect.Repositories.ClientsRepository.Update(client);
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)
@@ -88,6 +89,7 @@ namespace Services
                 using (var connect = _unitOfWork.Create())
                 {
                     connect.Repositories.ClientsRepository.Remove(clientId);
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)

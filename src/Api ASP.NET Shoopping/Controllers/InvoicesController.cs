@@ -8,58 +8,132 @@ namespace Api_ASP.NET_Shoopping.Controllers
     [Route("invoices")]
     public class InvoicesController : ControllerBase
     {
-        private readonly InvoicesServices _service;
+        private readonly InvoicesServices _serviceInvoice;
 
-        public InvoicesController(InvoicesServices service)
+        public InvoicesController(InvoicesServices serviceInvoice)
         {
-            this._service = service;
+            this._serviceInvoice = serviceInvoice;
         }
 
-        // GET: api/<HomeController>
+
         [HttpGet]
         public ActionResult<List<Invoices>> GetAll()
         {
             try
             {
-                List<Invoices> result = _service.AllInvoicesService();
-                return Ok(result);
+                var res = _serviceInvoice.AllInvoicesService();
+                return Ok(res);
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
-        //public ActionResult<string> GetAll() => "asasas";
-
-        // GET api/<HomeController>/5
+        
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<Invoices> Get(int id)
         {
-            return $"Pizza {id}";
+            try
+            {
+                var res = _serviceInvoice.GetInvoiceService(id);
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
-        // POST api/<HomeController>
+
+        public class Details
+        {
+            public int ProductID { get; set; }
+            public int Quantity { get; set; }
+            public decimal Price { get; set; }
+        }
+
+        public class DataInvoice
+        {
+            public int Id { get; set; }
+            public int ClientId { get; set; }
+            public List<Details> Detail { get; set; }
+        }
+
+
         [HttpPost]
-        public IActionResult Create(object pizza)
+        public IActionResult Create([FromBody] DataInvoice invoiceStart)
         {
-            Console.WriteLine(CreatedAtAction(nameof(Get), new { id = 12 }, pizza));
-            return CreatedAtAction(nameof(Get), new { id = 12 }, pizza);
+            try
+            {
+                var invoiceResult = new Invoices
+                {
+                    ClientID = invoiceStart.ClientId,
+                };
+
+                invoiceStart.Detail.ForEach(item =>
+                    invoiceResult.Detail.Add(new InvoicesDetails
+                    {
+                        ProductID = item.ProductID,
+                        Quantity = item.Quantity,
+                        Price = item.Price
+                    })
+                );
+
+                _serviceInvoice.CreateInvoiceService(invoiceResult);
+                return Ok("La compra se registro correctamente");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
-        // PUT api/<HomeController>/5
-        [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] string value)
+        [HttpPut]
+        public IActionResult Put([FromBody] DataInvoice invoiceNew)
         {
-            Console.WriteLine(id);
-            return NoContent();
+            try
+            {
+                var invoiceUpdated = new Invoices
+                {
+                    Id = invoiceNew.Id,
+                    ClientID = invoiceNew.ClientId
+                };
+
+                invoiceNew.Detail.ForEach( item => {
+                invoiceUpdated.Detail.Add(new InvoicesDetails
+                    {
+                        ProductID = item.ProductID,
+                        Quantity = item.Quantity,
+                        Price = item.Price
+                    });
+                });
+
+                _serviceInvoice.UpdateInvoiceService(invoiceUpdated);
+                return Ok($"La compra con ID: {invoiceNew.Id} se actualizo correctamente");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
 
-        // DELETE api/<HomeController>/5
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            Console.WriteLine(id);
-            return NoContent();
+            try
+            {
+                _serviceInvoice.DeleteInvoiceService(id);
+                return Ok($"La compra con ID: {id} se elimino correctamente");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

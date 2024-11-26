@@ -6,7 +6,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
 {
     [ApiController]
     [Route("invoicesdetails")]
-    public class InvoiceDetailsController : Controller
+    public class InvoiceDetailsController : ControllerBase
     {
         private readonly InvoicesDetailsServices _serviceDetails;
 
@@ -17,15 +17,46 @@ namespace Api_ASP.NET_Shoopping.Controllers
 
 
         [HttpGet]
-        public ActionResult GetAll()
+        public ActionResult<List<InvoicesDetails>> GetAll()
         {
             try
             {
-                List<InvoicesDetails> result = _serviceDetails.AllInvoiceDetailsService();
-                return CreatedAtAction(nameof(GetAll), new { result });
+                var res = _serviceDetails.AllInvoiceDetailsService();
+                return Ok(res);
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<InvoicesDetails> Get()
+        {
+            try
+            {
+                var res = _serviceDetails.AllInvoiceDetailsService();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public IActionResult Create(InvoicesDetails invoiceDetail)
+        {
+            try
+            {
+                var res = _serviceDetails.AllInvoiceDetailsService();
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
                 return BadRequest(ex.Message);
             }
         }
