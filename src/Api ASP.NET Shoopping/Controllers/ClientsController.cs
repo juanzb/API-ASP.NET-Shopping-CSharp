@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using MySqlX.XDevAPI;
 using Services;
 
 namespace Api_ASP.NET_Shoopping.Controllers
@@ -31,6 +32,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
         [HttpGet("{id}")]
         public ActionResult<Clients> GetClient(int id)
         {
+            Console.WriteLine("asdfsdf");
             try
             {
                 Clients client = _serviceClients.GetByIdClientService(id);
@@ -42,17 +44,49 @@ namespace Api_ASP.NET_Shoopping.Controllers
             }
         }
 
-        [HttpPost("p")]
-        //[Consumes(MediaTypeNames.Application.Json)]
-        //[ProducesResponseType<Product>(StatusCodes.Status201Created)]
-        //[ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public Clients CreateClient([FromBody] Clients client)
+        [HttpPost]
+        public ActionResult CreateClient([FromBody] Clients client)
         {
-            Console.WriteLine("AJAJASJAJSAKUISUUV");
-            Console.WriteLine(client);
-            _serviceClients.CreateClientService(client);
-            return client;
+            try
+            {
+                _serviceClients.CreateClientService(client);
+                return CreatedAtAction(nameof(CreateClient), new { client.Name } );
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+        }
+
+        [HttpPut]
+        public ActionResult UpdateClient([FromBody] Clients client)
+        {
+            try
+            {
+                _serviceClients.UpdateClientService(client);
+                return CreatedAtAction(nameof(UpdateClient), new { client });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
+        }
+
+        public ActionResult DeleteClient([FromBody] int clientId)
+        {
+            try
+            {
+                Console.WriteLine(clientId);
+                _serviceClients.DeleteClientService(clientId);
+                return CreatedAtAction(nameof(DeleteClient), new { clientId });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+                throw;
+            }
         }
     }
 }
-  

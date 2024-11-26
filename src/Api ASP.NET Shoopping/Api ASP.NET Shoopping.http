@@ -23,11 +23,24 @@ DELETE {{Api_ASP.NET_Shoopping_HostAddress}}/api/home/1
 Content-Type: application/json
 ###
 
-POST {{Api_ASP.NET_Shoopping_HostAddress}}/clients/p
+POST {{Api_ASP.NET_Shoopping_HostAddress}}/clients
 Content-Type: application/json
-
 {
-  "Name": "nueva Persona"
+  "Name": "Persona x"
 }
+###
+
+PUT {{Api_ASP.NET_Shoopping_HostAddress}}/clients
+Content-Type: application/json
+{
+  "Id": 21,
+  "Name": "Peraasasa"
+}
+###
+
+DELETE {{Api_ASP.NET_Shoopping_HostAddress}}/clients
+Content-Type: text/plain
+
+21
 
 ###

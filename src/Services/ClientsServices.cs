@@ -55,6 +55,7 @@ namespace Services
                 using (var connect = _unitOfWork.Create())
                 {
                     connect.Repositories.ClientsRepository.Create(client);
+                    connect.SaveChanges();
                 }
             }
             catch (Exception ex)

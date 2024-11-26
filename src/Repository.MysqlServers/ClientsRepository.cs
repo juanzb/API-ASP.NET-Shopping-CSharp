@@ -116,7 +116,7 @@ namespace Repository.MysqlServers
         {
             try
             {
-                const string queryDB = "UPDATE invoices SET clientID=@A, iva=@B, subtotal=@C, total=@D WHERE id=@clientId";
+                const string queryDB = "UPDATE clients SET name=@A WHERE id=@clientId";
                 using (MySqlCommand command = CreateMySqlCommand(queryDB))
                 {
                     command.Parameters.AddWithValue("@clientId", client.Id);
