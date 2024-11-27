@@ -10,6 +10,7 @@ namespace UnitOfWork.MysqlServer
         private MySqlTransaction _transaction { get; set; }
         public IUnitOfWorkRepository Repositories { get; set; }
 
+        //private readonly Iconfiguration _cofiguration;
         public UnidOfWorkMySqlServerAdapter()
         {
             _connect = new MySqlConnection(ParametersDB.ShopDB);
