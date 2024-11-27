@@ -38,14 +38,12 @@ namespace Repository.MysqlServers
                     }
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
             return result;
@@ -82,19 +80,16 @@ namespace Repository.MysqlServers
                     }
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Console.WriteLine($"Error de Argumento: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
             return result;
@@ -127,19 +122,12 @@ namespace Repository.MysqlServers
                     }
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (ArgumentException ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error de Argumento: {ex.Message}");
-                throw;
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
             return result;
@@ -167,9 +155,12 @@ namespace Repository.MysqlServers
                     }
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error Inserting invoice detail: {ex.Message}");
+                throw;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
@@ -185,12 +176,14 @@ namespace Repository.MysqlServers
                     command.ExecuteNonQuery();
                 }
             }
-            catch (Exception ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error deleting invoice detail: {ex.Message}");
+                throw;
+            }
+            catch (Exception)
+            {
                 throw;
             }
         }
-
     }
 }

@@ -36,9 +36,8 @@ namespace Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error en AllInvoicesService: {ex.Message}");
                 throw;
             }
             return result;
@@ -61,9 +60,8 @@ namespace Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error en GetInvoiceService: {ex.Message}");
                 throw;
             }
             return result;
@@ -86,9 +84,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error en CreateInvoiceService: {ex.Message}");
                 throw;
             }
         }
@@ -112,9 +109,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error en UpdateInvoiceService: {ex.Message}");
                 throw;
             }
         }
@@ -130,9 +126,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error en DeleteInvoiceService: {ex.Message}");
                 throw;
             }
         }

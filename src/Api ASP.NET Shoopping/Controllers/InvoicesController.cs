@@ -27,7 +27,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
         
@@ -42,7 +42,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -82,7 +82,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
                 );
 
                 _serviceInvoice.CreateInvoiceService(invoiceResult);
-                return Ok("La compra se registro correctamente");
+                return CreatedAtAction(nameof(Create), "La compra se registro correctamente");
             }
             catch (Exception ex)
             {
@@ -132,7 +132,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
     }

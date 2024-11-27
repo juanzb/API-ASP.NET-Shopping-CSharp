@@ -21,9 +21,25 @@ namespace Services
                     details = connect.Repositories.InvoiceDetailsRespository.GetAll();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
+                throw;
+            }
+            return details;
+        }
+
+        public InvoicesDetails GetByIdInvoiceDetailService(int id)
+        {
+            InvoicesDetails details;
+            try
+            {
+                using (IUnitOfWorkAdapter connect = _unitOfWork.Create())
+                {
+                    details = connect.Repositories.InvoiceDetailsRespository.GetById(id);
+                }
+            }
+            catch (Exception)
+            {
                 throw;
             }
             return details;
@@ -39,9 +55,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inserting invoice detail: {ex.Message}");
                 throw;
             }
         }
@@ -56,9 +71,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error deleting invoice detail: {ex.Message}");
                 throw;
             }
         }

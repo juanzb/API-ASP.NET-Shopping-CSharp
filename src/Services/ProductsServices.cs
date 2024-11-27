@@ -23,9 +23,8 @@ namespace Services
                     products = connect.Repositories.ProductsRepository.GetAll();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
             return products;
@@ -41,9 +40,8 @@ namespace Services
                     product = connect.Repositories.ProductsRepository.GetById(id);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
             return product;
@@ -59,9 +57,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }
@@ -76,9 +73,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }
@@ -93,9 +89,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }

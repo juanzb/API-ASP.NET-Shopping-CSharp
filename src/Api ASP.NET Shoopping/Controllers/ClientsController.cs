@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
+using System.Net;
 
 namespace Api_ASP.NET_Shoopping.Controllers
 {
@@ -25,8 +26,9 @@ namespace Api_ASP.NET_Shoopping.Controllers
             }
             catch (Exception ex)
             {
+                
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -42,7 +44,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
@@ -52,7 +54,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             try
             {
                 _serviceClients.CreateClientService(client);
-                return Ok($"El cliente '{client.Name}' se agrego correctamente");
+                return CreatedAtAction(nameof(Create), $"El cliente '{client.Name}' se agrego correctamente");
             }
             catch (Exception ex)
             {
@@ -87,7 +89,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 

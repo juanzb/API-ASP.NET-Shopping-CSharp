@@ -22,9 +22,8 @@ namespace Services
                     clients = connect.Repositories.ClientsRepository.GetAll();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
             return clients;
@@ -40,9 +39,8 @@ namespace Services
                     result = connect.Repositories.ClientsRepository.GetById(idClient);
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
             return result;
@@ -58,9 +56,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }
@@ -75,9 +72,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }
@@ -92,9 +88,8 @@ namespace Services
                     connect.SaveChanges();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine(ex.Message);
                 throw;
             }
         }

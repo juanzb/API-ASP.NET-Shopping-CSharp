@@ -33,14 +33,12 @@ namespace Repository.MysqlServers
                     }
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
             return result;
@@ -72,19 +70,16 @@ namespace Repository.MysqlServers
                     }
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Console.WriteLine($"Error de Argumento: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
             return result;
@@ -102,14 +97,12 @@ namespace Repository.MysqlServers
                     command.ExecuteNonQuery();
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
         }
@@ -128,19 +121,16 @@ namespace Repository.MysqlServers
                     if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
         }
@@ -157,19 +147,16 @@ namespace Repository.MysqlServers
                     if (res < 1) throw new ArgumentException("El ID no se encuentra registrado");
                 }
             }
-            catch (MySqlException ex)
+            catch (MySqlException)
             {
-                Console.WriteLine($"Error DB: {ex.Message}");
                 throw;
             }
-            catch (ArgumentException ex)
+            catch (ArgumentException)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                Console.WriteLine($"Error Inesperado: {ex.Message}");
                 throw;
             }
         }

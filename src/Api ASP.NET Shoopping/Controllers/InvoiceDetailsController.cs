@@ -27,16 +27,16 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
         [HttpGet("{id}")]
-        public ActionResult<InvoicesDetails> Get()
+        public ActionResult<InvoicesDetails> Get(int id)
         {
             try
             {
-                var res = _serviceDetails.AllInvoiceDetailsService();
+                var res = _serviceDetails.GetByIdInvoiceDetailService(id);
                 return Ok(res);
             }
             catch (Exception ex)
@@ -46,19 +46,5 @@ namespace Api_ASP.NET_Shoopping.Controllers
             }
         }
 
-        [HttpPut]
-        public IActionResult Create(InvoicesDetails invoiceDetail)
-        {
-            try
-            {
-                var res = _serviceDetails.AllInvoiceDetailsService();
-                return Ok(res);
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
-            }
-        }
     }
 }

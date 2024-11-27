@@ -26,12 +26,12 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Products> GetProduct(int id)
+        public ActionResult<Products> Get(int id)
         {
             try
             {
@@ -41,17 +41,17 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] Products product)
+        public IActionResult Create([FromBody] Products product)
         {
             try
             {
                 _serviceProducts.CreateProductcsService(product);
-                return Ok($"El producto '{product.Name}' se agrego correctamente");
+                return CreatedAtAction(nameof(Create),$"El producto '{product.Name}' se agrego correctamente");
             }
             catch (Exception ex)
             {
@@ -61,7 +61,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
         }
 
         [HttpPut]
-        public IActionResult UpdateProducts([FromBody] Products product)
+        public IActionResult Update([FromBody] Products product)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteProducts(int id)
+        public IActionResult Remove(int id)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace Api_ASP.NET_Shoopping.Controllers
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
-                return BadRequest(ex.Message);
+                return NotFound(ex.Message);
             }
         }
 

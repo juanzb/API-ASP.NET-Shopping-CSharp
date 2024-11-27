@@ -51,7 +51,7 @@ Content-Type: application/json
 }
 ###
 
-DELETE {{HostAddress}}/invoices/17
+DELETE {{HostAddress}}/invoices/12
 Content-Type: application/json
 
 ###
@@ -59,6 +59,11 @@ Content-Type: application/json
 
 ### InvoicesDetails ------------------------------
 GET {{HostAddress}}/invoicesdetails
+Accept: application/json
+
+###
+
+GET {{HostAddress}}/invoicesdetails/4
 Accept: application/json
 
 ###
@@ -100,6 +105,11 @@ Content-Type: application/json
 
 ### Client ------------------------------ 
 GET {{HostAddress}}/clients
+Content-Type: application/json
+
+###
+
+GET {{HostAddress}}/clients/12
 Content-Type: application/json
 
 ###
