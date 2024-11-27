@@ -34,7 +34,6 @@ namespace Api_ASP.NET_Shoopping.Controllers
         [HttpGet("{id}")]
         public ActionResult<Clients> Get(int id)
         {
-            Console.WriteLine("asdfsdf");
             try
             {
                 var res = _serviceClients.GetByIdClientService(id);
