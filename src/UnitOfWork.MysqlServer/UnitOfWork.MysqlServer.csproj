@@ -11,7 +11,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Parameters\Parameters.csproj" />
     <ProjectReference Include="..\Repository.MysqlServers\Repository.MysqlServers.csproj" />
     <ProjectReference Include="..\UnitOfWork.Interfaces\UnitOfWork.Interfaces.csproj" />
   </ItemGroup>

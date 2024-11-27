@@ -1,5 +1,4 @@
 ﻿using MySql.Data.MySqlClient;
-using Parameters;
 using UnitOfWork.Interfaces;
 
 namespace UnitOfWork.MysqlServer
@@ -10,10 +9,9 @@ namespace UnitOfWork.MysqlServer
         private MySqlTransaction _transaction { get; set; }
         public IUnitOfWorkRepository Repositories { get; set; }
 
-        //private readonly Iconfiguration _cofiguration;
-        public UnidOfWorkMySqlServerAdapter()
+        public UnidOfWorkMySqlServerAdapter(string connectionString)
         {
-            _connect = new MySqlConnection(ParametersDB.ShopDB);
+            _connect = new MySqlConnection(connectionString);
             _connect.Open();
 
             _transaction = _connect.BeginTransaction();

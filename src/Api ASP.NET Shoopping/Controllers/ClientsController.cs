@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Models;
 using Services;
-using System.Net;
 
 namespace Api_ASP.NET_Shoopping.Controllers
 {

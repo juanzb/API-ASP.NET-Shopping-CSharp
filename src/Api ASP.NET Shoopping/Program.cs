@@ -7,8 +7,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllers();
 
+var connectionString =
+    builder.Configuration.GetConnectionString("CadenaMySql")
+        ?? throw new InvalidOperationException("Conexión string 'CadenaMySql' no se encuentra");
+
 // Inyeccion de Dependencias
-builder.Services.AddScoped<IUnitOfWork, UnidOfWorkMySqlServer>();
+builder.Services.AddScoped<IUnitOfWork>(p => new UnidOfWorkMySqlServer(connectionString));
 builder.Services.AddScoped<InvoicesServices>();
 builder.Services.AddScoped<InvoicesDetailsServices>();
 builder.Services.AddScoped<ClientsServices>();
