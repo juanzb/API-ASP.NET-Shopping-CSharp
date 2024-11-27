@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Models", "src\Models\Models
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "src\Services\Services.csproj", "{018BBF8F-E9D6-4A2F-9837-412A42206E5D}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "00. Common", "00. Common", "{AB74F494-1A6F-441B-AA80-098B7EF2D824}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06. Common", "06. Common", "{AB74F494-1A6F-441B-AA80-098B7EF2D824}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Parameters", "src\Parameters\Parameters.csproj", "{3BA7886C-17BC-4CE7-8633-1E447CB538B0}"
 EndProject
@@ -27,7 +27,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.Interfaces", "sr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository.MysqlServers", "src\Repository.MysqlServers\Repository.MysqlServers.csproj", "{2D9B90CB-1BF7-4885-91F7-5251D7CAE9AF}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06. Api ASP.NET Shoopping", "06. Api ASP.NET Shoopping", "{FD83E402-736A-4192-BBC3-C7898B30923D}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01. Api ASP.NET Shoopping", "01. Api ASP.NET Shoopping", "{FD83E402-736A-4192-BBC3-C7898B30923D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Api ASP.NET Shoopping", "src\Api ASP.NET Shoopping\Api ASP.NET Shoopping.csproj", "{7FB7EE56-6D6F-4F38-ACB9-3143D0C64AF7}"
 EndProject
