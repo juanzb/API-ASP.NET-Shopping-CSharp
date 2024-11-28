@@ -1,7 +1,7 @@
 @HostAddress = http://localhost:5296
 
 ### Invoice ------------------------------
-GET {{HostAddress}}/invoices
+GET {{HostAddress}}/api/invoices
 Accept: application/json
 
 ###
@@ -11,10 +11,10 @@ Accept: application/json
 
 ###
 
-POST {{HostAddress}}/invoices
+POST {{HostAddress}}/api/invoices
 Content-Type: application/json
 {
-  "ClientID": 5,
+  "ClientID": 1,
   "Detail": [
     {
       "ProductID": 1,
@@ -31,7 +31,7 @@ Content-Type: application/json
 
 ###
 
-PUT {{HostAddress}}/invoices
+PUT {{HostAddress}}/api/invoices
 Content-Type: application/json
 {
   "Id": 17,
