@@ -14,7 +14,6 @@ namespace Api_ASP.NET_Shoopping.Controllers
             this._serviceClients = serviceClients;
         }
 
-
         [HttpGet]
         public ActionResult<List<Clients>> GetAll()
         {

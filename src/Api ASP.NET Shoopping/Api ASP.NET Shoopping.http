@@ -12,6 +12,7 @@ Accept: application/json
 ###
 
 POST {{HostAddress}}/api/invoices
+Authorization: tokenTest123
 Content-Type: application/json
 {
   "ClientID": 1,
@@ -32,6 +33,7 @@ Content-Type: application/json
 ###
 
 PUT {{HostAddress}}/api/invoices
+Authorization: tokenTest123
 Content-Type: application/json
 {
   "Id": 17,
@@ -52,6 +54,7 @@ Content-Type: application/json
 ###
 
 DELETE {{HostAddress}}/invoices/12
+Authorization: tokenTest123
 Content-Type: application/json
 
 ###
@@ -82,6 +85,7 @@ Accept: application/json
 ###
 
 POST {{HostAddress}}/products
+Authorization: tokenTest123
 Content-Type: application/json
 {
   "Name": "Pantalon",
@@ -90,6 +94,7 @@ Content-Type: application/json
 ###
 
 PUT {{HostAddress}}/products
+Authorization: tokenTest123
 Content-Type: application/json
 {
   "Id": 6,
@@ -99,6 +104,7 @@ Content-Type: application/json
 ###
 
 DELETE {{HostAddress}}/products/10
+Authorization: tokenTest123
 Content-Type: application/json
 
 ###
@@ -115,6 +121,7 @@ Content-Type: application/json
 ###
 
 POST {{HostAddress}}/clients
+Authorization: tokenTest123
 Content-Type: application/json
 {
   "Name": "Persona 12"
@@ -122,6 +129,7 @@ Content-Type: application/json
 ###
 
 PUT {{HostAddress}}/clients
+Authorization: tokenTest123
 Content-Type: application/json
 {
   "Id": 9,
@@ -130,6 +138,7 @@ Content-Type: application/json
 ###
 
 DELETE {{HostAddress}}/clients/9
+Authorization: tokenTest123
 Content-Type: application/json
 
 ###

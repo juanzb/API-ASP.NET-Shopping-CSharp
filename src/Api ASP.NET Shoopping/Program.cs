@@ -20,7 +20,6 @@ builder.Services.AddScoped<ClientsServices>();
 builder.Services.AddScoped<ProductsServices>();
 
 
-
 var app = builder.Build();
 
 
@@ -31,23 +30,23 @@ app.UsePathBase("/api");
 // Configure the HTTP request pipeline.
 
 
-//Middlewere Test
+//Middlewere de prueba
 app.Use(async (context, next) =>
 {
-    Console.WriteLine(context.Request.Host);
-    Console.WriteLine(context.Request.Method);
-    Console.WriteLine(context.Request.Path);
-    Console.WriteLine(context.Request.PathBase);
-    Console.WriteLine(context.Request.Protocol);
-    Console.WriteLine(context.Request.Query);
-    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.Cookies));
-    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.Headers));
-    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.ContentType));
-    Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.ContentLength));
+    //Console.WriteLine(context.Request.Host);
+    //Console.WriteLine(context.Request.Method);
+    //Console.WriteLine(context.Request.Path);
+    //Console.WriteLine(context.Request.PathBase);
+    //Console.WriteLine(context.Request.Protocol);
+    //Console.WriteLine(context.Request.Query);
+    //Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.Cookies));
+    //Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.Headers));
+    //Console.WriteLine(context.Request.Headers.Authorization);
+    //Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.ContentType));
+    //Console.WriteLine(System.Text.Json.JsonSerializer.Serialize(context.Request.ContentLength));
 
-    // Habilitar relectura del cuerpo
+    /*
     context.Request.EnableBuffering();
-    // Leer el cuerpo como texto
     using (var reader = new StreamReader(context.Request.Body, Encoding.UTF8, leaveOpen: true))
     {
         var body = await reader.ReadToEndAsync();
@@ -55,15 +54,13 @@ app.Use(async (context, next) =>
 
         // Reiniciar el flujo del cuerpo para que otros middlewares puedan leerlo
         context.Request.Body.Position = 0;
-    }
+    }*/
 
-    if (context.Request.PathBase != "/api") 
+if (context.Request.Headers.Authorization != "tokenTest123" && context.Request.Method != "GET")
         context.Response.StatusCode = 400;
-    else 
+    else
         await next();
 });
-
-app.UseAuthorization();
 
 app.MapControllers();
 
